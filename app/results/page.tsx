@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useEffect, useState, Suspense, useRef } from "react";
 import { useSearchParams } from "next/navigation";
+import { API_BASE_URL } from "../api-url";
 
 function ResultsContent() {
   const searchParams = useSearchParams();
@@ -14,6 +15,9 @@ function ResultsContent() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [fps, setFps] = useState(2); // Frames per second
+  const [showDifference, setShowDifference] = useState(false);
+  const hasPreviousFrame = currentIndex > 0;
+  const differenceActive = showDifference && hasPreviousFrame;
 
   // 1. Polling Logic (keeps your exact backend communication)
   useEffect(() => {
@@ -22,7 +26,7 @@ function ResultsContent() {
     const interval = setInterval(async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/job_status/${jobId}`,
+          `${API_BASE_URL}/job_status/${jobId}`,
         );
         const data = await response.json();
 
@@ -86,13 +90,25 @@ function ResultsContent() {
           <div className="results-player">
             {/* Main Active Frame */}
             <div className="results-frame">
-              <img
-                src={images[currentIndex]}
-                alt={`Frame ${currentIndex + 1}`}
-              />
-              <span className="results-frame-counter">
-                Frame {currentIndex + 1} of {images.length}
-              </span>
+              {differenceActive ? (
+                <>
+                  <img
+                    className="results-difference-source"
+                    src={images[currentIndex - 1]}
+                    alt=""
+                  />
+                  <img
+                    className="results-difference-current"
+                    src={images[currentIndex]}
+                    alt={`Difference between frames ${currentIndex} and ${currentIndex + 1}`}
+                  />
+                </>
+              ) : (
+                <img
+                  src={images[currentIndex]}
+                  alt={`Frame ${currentIndex + 1}`}
+                />
+              )}
             </div>
 
             {/* Scrubber Timeline Slider */}
@@ -114,6 +130,7 @@ function ResultsContent() {
             <div className="results-controls">
               <div className="results-playback-buttons">
                 <button
+                  type="button"
                   onClick={() => {
                     setIsPlaying(false);
                     setCurrentIndex(0);
@@ -123,12 +140,32 @@ function ResultsContent() {
                   Start
                 </button>
                 <button
+                  type="button"
                   onClick={() => setIsPlaying(!isPlaying)}
                   className="results-control-button results-primary-button"
                 >
                   {isPlaying ? "Pause" : "Play"}
                 </button>
+                <button
+                  type="button"
+                  onClick={() => setShowDifference(!showDifference)}
+                  disabled={!hasPreviousFrame}
+                  aria-pressed={differenceActive}
+                  title={
+                    hasPreviousFrame
+                      ? "Compare this frame with the previous frame"
+                      : "The first frame has no previous frame"
+                  }
+                  className={`results-control-button${differenceActive ? " results-primary-button" : ""}`}
+                >
+                  {differenceActive ? "Show current" : "Subtract previous"}
+                </button>
               </div>
+              {!hasPreviousFrame && (
+                <span className="results-difference-hint">
+                  No previous frame for the first image.
+                </span>
+              )}
 
               {/* Speed Selector */}
               <label className="results-speed">

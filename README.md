@@ -18,6 +18,17 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
+## API configuration
+
+The frontend uses `NEXT_PUBLIC_API_URL` as the base URL for the FastAPI server.
+It defaults to `http://localhost:8000` for local development. Set it to the
+public HTTPS URL of your API in the frontend deployment environment before
+building the app.
+
+On the FastAPI deployment, set `FRONTEND_ORIGINS` to the exact frontend origin
+(scheme and domain, without a path). Multiple origins can be comma-separated.
+It defaults to `http://localhost:3000` for local development.
+
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Learn More

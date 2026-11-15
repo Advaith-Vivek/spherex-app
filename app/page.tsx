@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 
 import React, { useState } from "react";
+import { API_BASE_URL } from "./api-url";
 
 export default function Home() {
   return <InputCard />;
@@ -90,7 +91,7 @@ function InputCard() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8000/process_image", {
+      const response = await fetch(`${API_BASE_URL}/process_image`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -124,7 +125,17 @@ function InputCard() {
   };
 
   return (
-    <main className="page-shell">
+    <main className="page-shell home-shell">
+      <section className="home-hero" aria-labelledby="home-hero-title">
+        <h1 id="home-hero-title">SKYBLINK</h1>
+        <p className="home-hero-tagline">Explore. Compare. Discover.</p>
+        <p className="home-hero-description">
+          Explore NASA&apos;s SPHEREx infrared sky survey effortlessly. Enter any
+          RA and Dec coordinates to retrieve multi-epoch observations, blink
+          between dates, and spot moving cosmic objects in seconds.
+        </p>
+      </section>
+
       <section className="preset-panel" aria-labelledby="preset-heading">
         <h2 id="preset-heading" className="preset-heading">
           Presets
