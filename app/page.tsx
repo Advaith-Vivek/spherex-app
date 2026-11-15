@@ -11,66 +11,64 @@ const PRESETS = [
   {
     label: "Barnard's Star",
     data: {
-      rightAscension: "269.4520",
+      right_ascension: "269.4520",
       declination: "4.6933",
-      infraredBand: "",
-      timeGap: "",
-      angleSearch: "",
+      band: "",
+      time: "",
+      angle: "",
     },
   },
   {
     label: "Epsilon Indi",
     data: {
-      rightAscension: "330.8404",
+      right_ascension: "330.8404",
       declination: "-56.7861",
-      infraredBand: "",
-      timeGap: "",
-      angleSearch: "",
+      band: "",
+      time: "",
+      angle: "",
     },
   },
   {
     label: "WISE 0855",
     data: {
-      rightAscension: "133.7951",
+      right_ascension: "133.7951",
       declination: "-7.2452",
-      infraredBand: "",
-      timeGap: "",
-      angleSearch: "",
+      band: "",
+      time: "",
+      angle: "",
     },
   },
   {
     label: "RW Aurigae",
     data: {
-      rightAscension: "76.9561",
+      right_ascension: "76.9561",
       declination: "30.4013",
-      infraredBand: "",
-      timeGap: "",
-      angleSearch: "",
+      band: "",
+      time: "",
+      angle: "",
     },
   },
   {
     label: "R Draconis",
     data: {
-      rightAscension: "248.1667",
+      right_ascension: "248.1667",
       declination: "66.7547",
-      infraredBand: "",
-      timeGap: "",
-      angleSearch: "",
+      band: "",
+      time: "",
+      angle: "",
     },
   },
 ];
 
 function InputCard() {
-  // State to hold the form values
   const [formValues, setFormValues] = useState({
-    rightAscension: "",
+    right_ascension: "",
     declination: "",
-    infraredBand: "",
-    timeGap: "",
-    angleSearch: "",
+    band: "",
+    time: "",
+    angle: "",
   });
 
-  // Handle changes for regular typing
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
@@ -87,16 +85,13 @@ function InputCard() {
     e.preventDefault();
 
     try {
-      const response = await fetch(
-        "http://localhost:YOUR_PORT_HERE/api/search",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formValues),
+      const response = await fetch("http://localhost:8000/process_image", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify(formValues),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to submit search parameters");
@@ -147,8 +142,8 @@ function InputCard() {
               type="number"
               step="any"
               placeholder="Right Ascension"
-              name="rightAscension"
-              value={formValues.rightAscension}
+              name="right_ascension"
+              value={formValues.right_ascension}
               onChange={handleChange}
               required
             />
@@ -169,8 +164,8 @@ function InputCard() {
           <label className="field">
             <select
               aria-label="Infrared Band"
-              name="infraredBand"
-              value={formValues.infraredBand}
+              name="band"
+              value={formValues.band}
               onChange={handleChange}
               required
             >
@@ -188,8 +183,8 @@ function InputCard() {
           <label className="field">
             <select
               aria-label="Time Gap"
-              name="timeGap"
-              value={formValues.timeGap}
+              name="time"
+              value={formValues.time}
               onChange={handleChange}
               required
             >
@@ -208,7 +203,7 @@ function InputCard() {
               step="any"
               placeholder="Angle of Search (In Arcsec)"
               name="angleSearch"
-              value={formValues.angleSearch}
+              value={formValues.angle}
               onChange={handleChange}
               required
             />
