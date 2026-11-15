@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useEffect, useState, Suspense, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -61,19 +62,19 @@ function ResultsContent() {
 
   return (
     <main className="page-shell results-shell">
+      <Link href="/" className="results-back-button">
+        Back to home
+      </Link>
+      <h1>SKY TIME-LAPSE</h1>
       <section className="glass-panel results-panel">
         <header className="results-header">
           <p className="eyebrow">Observation Results</p>
-          <h1>TIME-LAPSE VIEWER</h1>
         </header>
 
         {/* Status Box */}
         <div className="results-status" role="status">
           <p>
-            Status:{" "}
-            <span className="results-status-value">
-              {status}
-            </span>
+            Status: <span className="results-status-value">{status}</span>
           </p>
           {(status === "processing" || status === "queued") && (
             <span className="results-spinner" aria-label="Processing" />
@@ -151,9 +152,7 @@ function ResultsContent() {
                 Generating timelapse frames... Please wait.
               </p>
             ) : (
-              <p>
-                No frames found or job encountered an error.
-              </p>
+              <p>No frames found or job encountered an error.</p>
             )}
           </div>
         )}
@@ -164,7 +163,13 @@ function ResultsContent() {
 
 export default function ResultsPage() {
   return (
-    <Suspense fallback={<main className="page-shell results-shell"><p className="results-loading">Loading timelapse...</p></main>}>
+    <Suspense
+      fallback={
+        <main className="page-shell results-shell">
+          <p className="results-loading">Loading timelapse...</p>
+        </main>
+      }
+    >
       <ResultsContent />
     </Suspense>
   );

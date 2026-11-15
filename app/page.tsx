@@ -101,19 +101,25 @@ function InputCard() {
       if (!response.ok) {
         throw new Error("Failed to submit search parameters");
       }
-
-      const result = await response.json();
-      console.log("Success:", result);
-
       const data = await response.json();
+      console.log("Success:", data);
 
       if (data.job_id) {
+        setFormValues({
+          right_ascension: "",
+          declination: "",
+          band: "",
+          time: "",
+          angle: "",
+        });
+        setLoading(false);
         router.push(`/results?job_id=${data.job_id}`);
       } else {
         setLoading(false);
       }
     } catch (error) {
       console.error("Error submitting to external port:", error);
+      setLoading(false);
     }
   };
 
@@ -204,9 +210,9 @@ function InputCard() {
               <option value="" disabled>
                 Time Gap
               </option>
-              <option value="3-months">3 Months</option>
-              <option value="6-months">6 Months</option>
-              <option value="1-year">1 Year</option>
+              <option value="90">3 Months</option>
+              <option value="180">6 Months</option>
+              <option value="365">1 Year</option>
             </select>
           </label>
 
