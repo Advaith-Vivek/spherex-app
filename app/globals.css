@@ -76,6 +76,239 @@ body {
   overflow: auto;
 }
 
+.results-shell {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+  overflow-y: auto;
+  padding: clamp(20px, 4vh, 40px) 20px;
+}
+
+.results-panel {
+  flex: 0 0 auto;
+  width: min(900px, 100%);
+  height: auto;
+  max-height: none;
+  margin-right: 0;
+  padding: clamp(20px, 4vw, 36px);
+  gap: 20px;
+  justify-content: flex-start;
+  border-color: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(5px) saturate(100%);
+  -webkit-backdrop-filter: blur(5px) saturate(100%);
+}
+
+.results-header {
+  margin-bottom: 0;
+}
+
+.results-header h1 {
+  font-size: clamp(1.8rem, 3vw, 2.3rem);
+}
+
+.results-status,
+.results-player,
+.results-empty,
+.results-loading {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.3);
+  color: #e2e8f0;
+}
+
+.results-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 18px;
+  text-align: center;
+}
+
+.results-status p,
+.results-empty p {
+  margin: 0;
+}
+
+.results-status-value {
+  color: #bfdbfe;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.results-spinner {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  border: 2px solid rgba(191, 219, 254, 0.25);
+  border-bottom-color: #bfdbfe;
+  border-radius: 50%;
+  animation: results-spin 0.8s linear infinite;
+}
+
+@keyframes results-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.results-player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: clamp(14px, 3vw, 24px);
+}
+
+.results-frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 640px;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #020617;
+  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+.results-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.results-frame-counter {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 5px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.72);
+  color: #f8fafc;
+  font-size: 0.8rem;
+  backdrop-filter: blur(8px);
+}
+
+.results-scrubber {
+  width: 100%;
+}
+
+.results-scrubber input {
+  width: 100%;
+  accent-color: rgb(65, 106, 254);
+  cursor: pointer;
+}
+
+.results-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+}
+
+.results-playback-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+button.results-control-button {
+  margin: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  background: rgba(15, 23, 42, 0.48);
+  color: #f8fafc;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+button.results-control-button:hover {
+  background: rgba(15, 23, 42, 0.7);
+}
+
+button.results-control-button.results-primary-button {
+  border-color: rgba(65, 106, 254, 0.5);
+  background: rgba(65, 106, 254, 0.671);
+}
+
+button.results-control-button.results-primary-button:hover {
+  background: rgb(65, 106, 254);
+}
+
+.results-speed {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #e2e8f0;
+  font-size: 0.9rem;
+}
+
+.results-speed select {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 0.65rem 2rem 0.65rem 0.75rem;
+  background: rgba(15, 23, 42, 0.48);
+  color: #f8fafc;
+  color-scheme: dark;
+  font: inherit;
+}
+
+.results-speed select:focus-visible,
+.results-control-button:focus-visible,
+.results-scrubber input:focus-visible {
+  outline: 2px solid rgba(191, 219, 254, 0.8);
+  outline-offset: 3px;
+}
+
+.results-empty,
+.results-loading {
+  padding: clamp(36px, 8vh, 72px) 20px;
+  text-align: center;
+}
+
+.results-empty p,
+.results-loading {
+  font-size: 1.05rem;
+}
+
+.results-pulse {
+  animation: results-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes results-pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (max-width: 640px) {
+  .results-shell {
+    padding: 16px 12px;
+  }
+
+  .results-panel {
+    width: 100%;
+    padding: 20px 16px;
+  }
+
+  .results-controls {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .results-speed {
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
 @media (max-width: 640px) {
   .glass-panel {
     width: calc(95% - clamp(12px, 2.5vw, 24px));

@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 
 import React, { useState } from "react";
 
@@ -61,6 +62,8 @@ const PRESETS = [
 ];
 
 function InputCard() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [formValues, setFormValues] = useState({
     right_ascension: "",
     declination: "",
@@ -84,6 +87,8 @@ function InputCard() {
   const SubHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    setLoading(true);
+
     try {
       const response = await fetch("http://localhost:8000/process_image", {
         method: "POST",
@@ -99,6 +104,14 @@ function InputCard() {
 
       const result = await response.json();
       console.log("Success:", result);
+
+      const data = await response.json();
+
+      if (data.job_id) {
+        router.push(`/results?job_id=${data.job_id}`);
+      } else {
+        setLoading(false);
+      }
     } catch (error) {
       console.error("Error submitting to external port:", error);
     }
@@ -202,14 +215,16 @@ function InputCard() {
               type="number"
               step="any"
               placeholder="Angle of Search (In Arcsec)"
-              name="angleSearch"
+              name="angle"
               value={formValues.angle}
               onChange={handleChange}
               required
             />
           </label>
 
-          <button type="submit">Run Search</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Processing..." : "Run Search"}
+          </button>
         </form>
       </section>
     </main>
